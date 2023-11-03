@@ -9,9 +9,29 @@ export default class PortfolioService {
         this.portfolioDetailRepository = new PortfolioDetailRepository()
     }
 
+    async getSnowList(){
+        const result = await this.portfolioSummaryRepository.getSnowList()
+        const transformedResults = result.map(result => ({
+            title: result.name,
+            username: result.username,
+            createdDate: result.created_date,
+            strategyNumber: result.strategyNumber,
+            profit: result.profit,
+            profit_ratio: result.profit_ratio,
+            period: this.calculateMonths(result.startDate, result.endDate)
+        }));
+        return transformedResults
+    }
+
+    async getSnowDetail(portfolioIdentifierModel) {
+        const result = await this.portfolioDetailRepository.getSnowDetail(portfolioIdentifierModel)
+        return result
+    }
+
     async search(searchRequestModel){
         const result = await this.portfolioSummaryRepository.search(searchRequestModel)
         const transformedResults = result.map(result => ({
+            title: result.name,
             username: result.username,
             createdDate: result.created_date,
             strategyNumber: result.strategyNumber,
@@ -30,6 +50,7 @@ export default class PortfolioService {
     async getUserPortfolioList(username) {
         const result = await this.portfolioSummaryRepository.getUserPortfolioList(username)
         const transformedResults = result.map(result => ({
+            title: result.name,
             username: result.username,
             createdDate: result.created_date,
             strategyNumber: result.strategyNumber,
@@ -52,6 +73,7 @@ export default class PortfolioService {
     async getRecentPortfolios(){
         const result = await this.portfolioSummaryRepository.getRecentPortfolios()
         const transformedResults = result.map(result => ({
+            title: result.name,
             username: result.username,
             createdDate: result.created_date,
             strategyNumber: result.strategyNumber,
@@ -65,6 +87,7 @@ export default class PortfolioService {
     async getPopularPortfolios(){
         const result = await this.portfolioSummaryRepository.getPopularPortfolios()
         const transformedResults = result.map(result => ({
+            title: result.name,
             username: result.username,
             createdDate: result.created_date,
             strategyNumber: result.strategyNumber,

@@ -25,8 +25,14 @@ const portfolioSummarySchema = new Schema({
 
 export default class PortfolioSummaryRepository {
     portfolioSummaryModel
+    snowPickSummaryModel
     constructor(){
         this.portfolioSummaryModel = mongoInsertDB.model('portfolio_summary', portfolioSummarySchema, 'portfolio_summary')
+        this.snowPickSummaryModel = mongoInsertDB.model('snowpick_summary', portfolioSummarySchema, 'snowpick_summary')
+    }
+
+    async getSnowList(){
+        return await this.snowPickSummaryModel.find({})
     }
 
     async search(searchRequestModel) {

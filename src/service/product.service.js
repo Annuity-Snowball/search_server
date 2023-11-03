@@ -21,11 +21,17 @@ export default class ProductService {
 
     async getComment(etfCode) {
         const commentInfo = await this.etfInformationRepository.getEtfCommentInfo(etfCode)
+        try {
+            const comment = {
+                comment: `${commentInfo[0].etfName}은(는) ${commentInfo[0].etfCompany}이(가) 운용합니다. \n${commentInfo[0].baseIndex}을(를) ${commentInfo[0].category}방식으로 추종합니다.`
+            }    
 
-        const comment = {
-            comment: `${commentInfo[0].etfName}은(는) ${commentInfo[0].etfCompany}이(가) 운용합니다. \n${commentInfo[0].baseIndex}을(를) ${commentInfo[0].category}방식으로 추종합니다.`
-        }
-
-        return comment
+            return comment
+        } catch (error) {
+            const comment = {
+                comment: "이 ETF는 가치평가지표를 제공하지 않습니다."
+            }
+            return comment
+        }        
     }
 }

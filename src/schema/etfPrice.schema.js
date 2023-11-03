@@ -23,7 +23,7 @@ export default class EtfPriceRepository {
 
         const matchCondition = {
             etf_date: { $gte: date },
-            etf_name: { $regex: `${infoListRequestModel.etfName}`, $options: "ix" }
+            etf_name: { $regex: `${infoListRequestModel.etfName}`, $options: "i" }
         }
         
         if (infoListRequestModel.etfCompany && infoListRequestModel.etfCompany[0] !== "") {

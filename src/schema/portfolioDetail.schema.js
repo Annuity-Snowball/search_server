@@ -19,14 +19,27 @@ const portfolioDetailSchema = new Schema({
 
 export default class PortfolioDetailRepository {
     portfolioDetailModel
+    snowDetailModel
     constructor(){
         this.portfolioDetailModel = mongoInsertDB.model('portfolio_detail', portfolioDetailSchema, 'portfolio_detail')
+        this.snowDetailModel = mongoInsertDB.model('snowpick_detail', portfolioDetailSchema, 'snowpick_detail')
+    }
+
+    async getSnowDetail(portfolioIdentifierModel) {
+        const { createdDate, username } = portfolioIdentifierModel
+
+        return await this.snowDetailModel.findOne(
+            {
+                created_date: new Date(createdDate),
+                username: username
+            }
+        )
     }
 
     async getDetailedInfo(portfolioIdentifierModel) {
         const { createdDate, username } = portfolioIdentifierModel
 
-        return await this.portfolioDetailModel.find(
+        return await this.portfolioDetailModel.findOne(
             {
                 created_date: new Date(createdDate),
                 username: username

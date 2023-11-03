@@ -10,6 +10,17 @@ class PortfolioController {
         this.portfolioService = new PortfolioService()
     }
 
+    async snowList(req, res){
+        const result = await this.portfolioService.getSnowList()
+        res.send(result)
+    }
+
+    async snowDetail(req, res){
+        const portfolioIdentifierModel = new PortfolioIdentifierModel(req.body)
+        const result = await this.portfolioService.getSnowDetail(portfolioIdentifierModel)
+        res.send(result)
+    }
+
     async search(req, res) {
         const searchRequestModel = new SearchRequestModel(req.body)
         const result = await this.portfolioService.search(searchRequestModel)
@@ -31,7 +42,10 @@ class PortfolioController {
     async hit(req, res) {
         const portfolioIdentifierModel = new PortfolioIdentifierModel(req.body)
         const result = await this.portfolioService.hitPortfolio(portfolioIdentifierModel)
-        res.send(result)
+        const response = {
+            result: result
+        }
+        res.send(response)
     }
 
     async numbers(req, res) {
@@ -65,6 +79,14 @@ router.post('/detail', async (req, res, next) => {
 
 router.post('/hit', async (req, res, next) => {
     portfolioController.hit(req, res)
+})
+
+router.post('/snow/detail', async (req, res, next) => {
+    portfolioController.snowDetail(req, res)
+})
+
+router.get('/snow/list', async (req, res, next) => {
+    portfolioController.snowList(req, res)
 })
 
 router.get('/user/:username', async (req, res, next) => {
